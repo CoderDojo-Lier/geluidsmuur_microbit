@@ -16,6 +16,10 @@ function BevestigSpel () {
     State += 1 + spel
     basic.clearScreen()
 }
+input.onLogoEvent(TouchButtonEvent.LongPressed, function () {
+    State = 0
+    basic.showNumber(kanaal)
+})
 function VeranderKanaal () {
     kanaal += 1
     if (kanaal > 3) {
@@ -38,10 +42,6 @@ function Lager () {
     basic.pause(3)
     _28B_phase(0, 0, 0, 0)
 }
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    State = 0
-    basic.showNumber(kanaal)
-})
 function DoeA () {
     if (State == 3) {
     	
@@ -69,10 +69,6 @@ function Hoger () {
     basic.pause(3)
     _28B_phase(0, 0, 0, 0)
 }
-input.onButtonPressed(Button.AB, function () {
-    radio.sendString("C")
-    doeAB()
-})
 function Veranderspel () {
     if (spel != 0) {
         spel = 0
@@ -98,6 +94,10 @@ function doeB () {
         BevestigKanaal()
     }
 }
+input.onButtonPressed(Button.AB, function () {
+    radio.sendString("C")
+    doeAB()
+})
 radio.onReceivedString(function (receivedString) {
     if (receivedString == "C") {
         doeAB()
