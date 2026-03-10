@@ -16,6 +16,10 @@ function BevestigSpel () {
     State += 1 + spel
     basic.clearScreen()
 }
+input.onLogoEvent(TouchButtonEvent.LongPressed, function () {
+    State = 0
+    basic.showNumber(kanaal)
+})
 function VeranderKanaal () {
     kanaal += 1
     if (kanaal > 3) {
@@ -38,10 +42,6 @@ function Lager () {
     basic.pause(3)
     _28B_phase(0, 0, 0, 0)
 }
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    State = 0
-    basic.showNumber(kanaal)
-})
 function DoeA () {
     if (State == 3) {
     	
@@ -69,10 +69,6 @@ function Hoger () {
     basic.pause(3)
     _28B_phase(0, 0, 0, 0)
 }
-input.onButtonPressed(Button.AB, function () {
-    radio.sendString("C")
-    doeAB()
-})
 function Veranderspel () {
     if (spel != 0) {
         spel = 0
@@ -98,6 +94,10 @@ function doeB () {
         BevestigKanaal()
     }
 }
+input.onButtonPressed(Button.AB, function () {
+    radio.sendString("C")
+    doeAB()
+})
 radio.onReceivedString(function (receivedString) {
     if (receivedString == "C") {
         doeAB()
@@ -120,6 +120,7 @@ input.onButtonPressed(Button.B, function () {
     doeB()
 })
 function Ledlanceerlicht () {
+    strip.clear()
     for (let index = 0; index <= 9; index++) {
         range = strip.range(9 - index, index + 1)
         range.showColor(neopixel.colors(NeoPixelColors.Green))
@@ -130,14 +131,18 @@ function Ledlanceerlicht () {
 }
 function Lanceer () {
     pins.digitalWritePin(DigitalPin.P12, 0)
+    strip.clear()
+    // Turning on the motors causes a voltage drop => Wait a bit to stabilize the voltage before turning on the leds
+    basic.pause(500)
     Ledlanceerlicht()
     basic.pause(100)
     servos.P1.setAngle(160)
     basic.pause(2000)
     servos.P1.setAngle(20)
+    strip.clear()
+    basic.pause(500)
     pins.digitalWritePin(DigitalPin.P12, 1)
     strip.clear()
-    strip.show()
 }
 let range: neopixel.Strip = null
 let spel = 0
